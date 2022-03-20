@@ -1,21 +1,9 @@
 import G6, {IShape} from '@antv/g6';
 import {ModelConfig} from "@antv/g6-core/lib/types";
 import {IGroup} from "@antv/g-base";
-import {Item, INode} from "@antv/g6-core/lib/types";
-import {ShapeType, CustomAttr} from "../../lib/types";
+import {ElementType, cttrs} from "../../lib/types";
 import zpx from "zpx";
 
-const defaultShapeAttr = {
-    stroke: '#CED4D9',
-    fill: '#FFFFFF',
-    shadowOffsetX: 0,
-    shadowOffsetY: 4,
-    shadowBlur: 10,
-    shadowColor: 'rgba(13, 26, 38, 0.08)',
-    lineWidth: 1,
-    radius: 4,
-    strokeOpacity: .7,
-}
 
 const defaults = {
     getAnchorPoints(cfg?: ModelConfig) {
@@ -39,7 +27,7 @@ interface ICustomAttr {
 type addShape = (attr: ICustomAttr) => IShape[]
 type addMainShape = (attr: ICustomAttr) => IShape
 
-G6.registerNode('step-start', {
+G6.registerNode(ElementType.nodeStart, {
         ...defaults,
         drawShape: function (cfg, group) {
             if (!group) {
@@ -60,7 +48,7 @@ G6.registerNode('step-start', {
                             [w * (2 / 3), 0],
                             [-w * (1 / 3), height / 2],
                         ],
-                        cursor: "move"
+                        cursor: "auto"
                     },
                     draggable: true,
                 })]
@@ -69,7 +57,7 @@ G6.registerNode('step-start', {
     }, "single-node"
 );
 
-G6.registerNode('step-end', {
+G6.registerNode(ElementType.nodeEnd, {
         ...defaults,
         drawShape: function (cfg, group) {
             if (!group) {
@@ -87,7 +75,7 @@ G6.registerNode('step-end', {
                         height,
                         x: -width / 2,
                         y: -height / 2,
-                        cursor: "move"
+                        cursor: "auto"
                     },
                     draggable: true,
                 })]
@@ -96,7 +84,7 @@ G6.registerNode('step-end', {
     }, "single-node"
 );
 
-G6.registerNode('flow-task', {
+G6.registerNode(ElementType.nodeTask, {
         ...defaults,
         drawShape: function (cfg, group) {
             if (!group) {
@@ -109,7 +97,7 @@ G6.registerNode('flow-task', {
     }, "single-node"
 );
 
-G6.registerNode('flow-user', {
+G6.registerNode(ElementType.nodeUser, {
         ...defaults,
         drawShape: function (cfg, group) {
             if (!group) {
@@ -122,7 +110,7 @@ G6.registerNode('flow-user', {
     }, "single-node"
 );
 
-G6.registerNode('gateway-parallel', {
+G6.registerNode(ElementType.nodeParallel, {
         ...defaults,
         drawShape: function (cfg, group) {
             if (!group) {
@@ -142,7 +130,7 @@ G6.registerNode('gateway-parallel', {
                             height: height1,
                             x: attr.width / 2 - width1 / 2,
                             y: attr.height / 2 - height1 / 2,
-                            cursor: "move"
+                            cursor: "auto"
                         },
                         draggable: true,
                     }),
@@ -153,7 +141,7 @@ G6.registerNode('gateway-parallel', {
                             height: height2,
                             x: attr.width / 2 - width2 / 2,
                             y: attr.height / 2 - height2 / 2,
-                            cursor: "move"
+                            cursor: "auto"
                         },
                         draggable: true,
                     })
@@ -163,7 +151,7 @@ G6.registerNode('gateway-parallel', {
     }, "single-node"
 );
 
-G6.registerNode('gateway-mutex', {
+G6.registerNode(ElementType.nodeMutex, {
         ...defaults,
         drawShape: function (cfg, group) {
             if (!group) {
@@ -197,7 +185,7 @@ G6.registerNode('gateway-mutex', {
                             [centerX - w / 2 + x, centerY + h / 2],
                             [centerX - w / 2, centerY + h / 2 - x],
                         ],
-                        cursor: "move"
+                        cursor: "auto"
                     },
                     draggable: true,
                 })]
@@ -211,7 +199,6 @@ function defaultStep(group: IGroup, cfg?: ModelConfig, fn?: addShape) {
     return defaultNode(group, "#FA8C16", function (attrs) {
         return group.addShape('circle', {
             attrs: {
-                ...defaultShapeAttr,
                 ...attrs,
                 fill: '#FEF7E8',
                 stroke: '#FA8C16',
@@ -228,7 +215,6 @@ function defaultFlow(group: IGroup, cfg?: ModelConfig, fn?: addShape) {
     return defaultNode(group, '#1890FF', function (attrs) {
         return group.addShape('rect', {
             attrs: {
-                ...defaultShapeAttr,
                 ...attrs,
                 fill: '#E7F7FE',
                 stroke: '#1890FF',
@@ -244,7 +230,6 @@ function defaultGateway(group: IGroup, cfg?: ModelConfig, fn?: addShape) {
         let h = attrs.height
         return group.addShape('polygon', {
             attrs: {
-                ...defaultShapeAttr,
                 ...attrs,
                 fill: '#E8FEFA',
                 stroke: '#13C2C2',
@@ -261,25 +246,56 @@ function defaultGateway(group: IGroup, cfg?: ModelConfig, fn?: addShape) {
 
 }
 
-function defaultNode(group: IGroup, anchorColor: string, fn: addMainShape, cfg?: ModelConfig, fns?: addShape, anchorOffset?: boolean): IShape {
+function defaultNode(group: IGroup, color: string, fn: addMainShape, cfg?: ModelConfig, fns?: addShape, anchorOffset?: boolean): IShape {
     let uuid = zpx.uuid()
-    group.set(CustomAttr.BType, ShapeType.CustomGroup)
-    group.set(CustomAttr.UUID, uuid)
 
-    let attrs = getStyle(cfg)
+    group.set(cttrs.BType, ElementType.typeGroup)
+    group.set(cttrs.UUID, uuid)
+
+
+    let attrs = {
+        width: 0,
+        height: 0,
+        cursor: "auto",
+        stroke: '#CED4D9',
+        fill: '#FFFFFF',
+        shadowOffsetX: 0,
+        shadowOffsetY: 0,
+        shadowBlur: 10,
+        shadowColor: "#ccc",
+        lineWidth: 1,
+        radius: 4,
+        strokeOpacity: .8,
+    }
+
+    if (cfg) {
+        if (typeof cfg.size == 'number') {
+            attrs.width = cfg.size
+            attrs.height = cfg.size
+        } else if (cfg.size instanceof Array) {
+            if (cfg.size.length == 1) {
+                attrs.width = cfg.size[0]
+                attrs.height = cfg.size[0]
+            } else if (cfg.size.length > 1) {
+                attrs.width = cfg.size[0]
+                attrs.height = cfg.size[1]
+            }
+        }
+    }
+
     let shapes = [fn(attrs)]
     if (fns) {
         shapes.push(...fns(attrs))
     }
 
     for (let o of shapes) {
-        o.set(CustomAttr.BType, ShapeType.CustomShape)
-        o.set(CustomAttr.UUID, uuid)
+        o.set(cttrs.BType, ElementType.typeShape)
+        o.set(cttrs.UUID, uuid)
     }
 
-    let anchors = defaultAnchor(group, attrs, cfg, anchorColor, anchorOffset)
+    let anchors = defaultAnchor(group, attrs, cfg, color, anchorOffset)
     for (let o of anchors) {
-        o.set(CustomAttr.UUID, uuid)
+        o.set(cttrs.UUID, uuid)
     }
     group.sort()
     return shapes[0]
@@ -314,8 +330,22 @@ function defaultAnchor(group: IGroup, attr: ICustomAttr, cfg?: ModelConfig, colo
                 },
                 visible: false,
             })
-            s.set(CustomAttr.BType, ShapeType.AnchorInPoint)
-            shapes.push(s)
+            s.set(cttrs.BType, ElementType.anchorInPoint)
+
+            let ss = group.addShape("circle", {
+                attrs: {
+                    x: x + offsetX,
+                    y: y + offsetY,
+                    r: 10,
+                    fill: color,
+                    cursor: "crosshair",
+                    opacity: 0.3
+                },
+                visible: false,
+                zIndex: 1,
+            })
+            ss.set(cttrs.BType, ElementType.anchorInPoint)
+            shapes.push(ss)
         }
     }
 
@@ -329,42 +359,18 @@ function defaultAnchor(group: IGroup, attr: ICustomAttr, cfg?: ModelConfig, colo
                 attrs: {
                     x: x + offsetX,
                     y: y + offsetY,
-                    r: 4,
+                    r: 6,
                     fill: "#fff",
                     stroke: color,
                     cursor: "crosshair",
                 },
                 visible: false,
             })
-            s.set(CustomAttr.BType, ShapeType.AnchorOutPoint)
+            s.set(cttrs.BType, ElementType.anchorOutPoint)
             shapes.push(s)
         }
     }
 
     return shapes
-}
-
-
-function getStyle(cfg?: ModelConfig): ICustomAttr {
-    let width = 64
-    let height = 64
-
-
-    if (cfg) {
-        if (typeof cfg.size == 'number') {
-            width = cfg.size
-            height = cfg.size
-        } else if (cfg.size instanceof Array) {
-            if (cfg.size.length == 1) {
-                width = cfg.size[0]
-                height = cfg.size[0]
-            } else if (cfg.size.length > 1) {
-                width = cfg.size[0]
-                height = cfg.size[1]
-            }
-        }
-    }
-
-    return {width, height, cursor: "move"}
 }
 

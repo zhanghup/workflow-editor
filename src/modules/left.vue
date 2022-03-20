@@ -1,5 +1,5 @@
 <template>
-  <Panel direct="left" title="组件">
+  <Panel direct="left" title="流程组件">
     <Step></Step>
   </Panel>
 </template>

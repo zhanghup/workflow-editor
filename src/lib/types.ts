@@ -1,52 +1,64 @@
-export enum Events {
+
+// 记得初始化的时候情况zpx中的事件
+export const Events:Record<string, string> = {
     /** 小地图插件注册 */
-    PluginMinimapRegister = "PluginMinimapRegister",
+    PluginMinimapRegister: "PluginMinimapRegister",
     /**  网格线注册 */
-    PluginGridRegister = "PluginGridRegister",
+    PluginGridRegister: "PluginGridRegister",
     /** 编辑工具注册 */
-    PluginToolbarRegister = "PluginToolbarRegister",
-
+    PluginToolbarRegister: "PluginToolbarRegister",
     /** 切换模式 */
-    GraphModeChange = "GraphModeChange",
-
+    GraphModeChange: "GraphModeChange",
     /** 数据刷新 */
-    DataRefresh = "DataRefresh",
-
+    DataRefresh: "DataRefresh",
     /** 添加节点 */
-    NodeAdd = "NodeAdd",
+    NodeAdd: "NodeAdd",
     /** 添加节点并且进行屏幕坐标转换 */
-    NodeAddPx = "NodeAddPx",
-
-
+    NodeAddPx: "NodeAddPx",
     /** 添加线 */
-    EdgeAdd = "EdgeAdd"
+    EdgeAdd: "EdgeAdd"
 }
 
-export enum NodeEvent {
-    Mouseenter = "mouseenter",
+// 记得初始化的时候情况zpx中的事件
+export const VEvents:Record<string, string> = {
+    NodeEdit: "node:edit",
 }
 
-export enum CustomAttr {
+/** 自定义属性值 */
+export enum cttrs {
     BType = "btype",
     UUID = "uuid"
 }
 
-export enum ShapeType {
-    CustomGroup = "CustomGroup",
-    CustomShape = "CustomShape",
+export enum ElementType {
+    nodeStart = "node:step-start",
+    nodeEnd = "node:step-end",
+    nodeTask = "node:flow-task",
+    nodeUser = "node:flow-user",
+    nodeParallel = "node:gateway-parallel",
+    nodeMutex = "node:gateway-mutex",
 
-    AnchorInPoint = "AnchorInPoint",
-    AnchorOutPoint = "AnchorOutPoint",
+    edge = "edge:default",
+
+    typeGroup = "typeGroup",
+    typeShape = "typeShape",
+    typeNode = "typeNode",
+    typeEdge = "typeEdge",
+
+    anchorInPoint = "anchorInPoint",
+    anchorOutPoint = "anchorOutPoint",
 }
 
 export enum GraphMode {
-    Default = "default",
-    EditEdge = "edit-edge",
+    default = "default",
+    edgeAdd = "edge:add",
+    nodeEdit = "node:edit"
 }
 
 export enum GraphBehavior {
-    AddEdge = "AddEdge",
-    HoverNode = "HoverNode"
+    edgeAction = "edgeAction",
+    nodeHover = "node:hover",
+    nodeEdit = "node:edit"
 }
 
 

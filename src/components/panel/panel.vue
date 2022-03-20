@@ -1,7 +1,13 @@
 <template>
   <div class="z-panel" :style="localStyle">
     <div class="z-title" v-if="title||$slots.title">
-      <slot name="title">{{ title }}</slot>
+      <slot name="title">
+        <div class="z-title-default">{{ title }}</div>
+      </slot>
+      <div style="padding-right: 5px;">
+        <slot name="title-action"></slot>
+      </div>
+
     </div>
     <div class="z-body">
       <slot></slot>
@@ -9,7 +15,7 @@
   </div>
 </template>
 <script lang="ts">
-import {defineComponent, reactive, PropType, toRef, watch} from 'vue'
+import {defineComponent, reactive, toRef, watch} from 'vue'
 import zpx from "zpx";
 
 
@@ -21,7 +27,7 @@ export default defineComponent({
     direct: {
       type: String,
       validator: v => ["top", "bottom", "left", "right"].indexOf(v) > -1
-    } as PropType<"top" | "left" | "right" | "bottom">,
+    },
   },
   setup(props) {
     let localStyle = reactive<Record<string, string>>({})
@@ -29,6 +35,7 @@ export default defineComponent({
       toRef(props, "width"),
       toRef(props, "direct"),
     ], ([width, direct]) => {
+
       localStyle.width = width
 
 
@@ -73,6 +80,11 @@ export default defineComponent({
     color: #000;
     line-height: 32px;
     padding-left: 12px;
+    display: flex;
+
+    &-default {
+      flex-grow: 1;
+    }
   }
 
   .z-body {

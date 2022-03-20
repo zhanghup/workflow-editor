@@ -1,15 +1,15 @@
-import G6, {IItemBase, IShape, G6Event} from '@antv/g6';
-import {Events, GraphBehavior, GraphMode, ShapeType, NodeEvent, CustomAttr} from "../../lib/types";
+import G6, {INode, IShape} from '@antv/g6';
+import {GraphBehavior, ElementType, cttrs} from "../../lib/types";
 import zpx from "zpx";
 import {IGroup} from "@antv/g-base";
 
-// Custom a type of Behavior
-G6.registerBehavior(GraphBehavior.HoverNode, {
+
+G6.registerBehavior(GraphBehavior.nodeHover, {
     currentXY: [0, 0],
     getEvents() {
         return {
-            [G6Event.NODE_MOUSEENTER]: "onMouseenter",
-            [G6Event.NODE_MOUSEOUT]: "onMouseout",
+            "node:mouseenter": "onMouseenter",
+            "node:mouseout": "onMouseout",
         };
     },
     onMouseenter(e: any) {
@@ -23,7 +23,7 @@ G6.registerBehavior(GraphBehavior.HoverNode, {
 
 
 function AnchorVisible(e: any, show: boolean) {
-    let {item} = e
+    let item = e.item as INode
     if (!item) {
         return
     }
@@ -34,12 +34,12 @@ function AnchorVisible(e: any, show: boolean) {
 
     let group = zpx.val(item, "_cfg.group") as IGroup
 
-    if (group.get(CustomAttr.BType) != ShapeType.CustomGroup) {
+    if (group.get(cttrs.BType) != ElementType.typeGroup) {
         return;
     }
 
     let shapes = zpx.val(group, "cfg.children") || []
-    let anchors = shapes.filter((r: IShape) => r.get(CustomAttr.BType) == ShapeType.AnchorOutPoint) as IShape[]
+    let anchors = shapes.filter((r: IShape) => r.get(cttrs.BType) == ElementType.anchorOutPoint) as IShape[]
     for (let o of anchors) {
         if (show) {
             o.show()

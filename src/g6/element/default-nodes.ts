@@ -4,12 +4,13 @@ import GatewayMutex from "../../assets/gateway-mutex.svg"
 import GatewayParallel from "../../assets/gateway-parallel.svg"
 import FlowTask from "../../assets/flow-task.svg"
 import FlowUser from "../../assets/flow-user.svg"
-import {INode} from "../../lib/types";
+import {ElementType, INode} from "../../lib/types";
+import zpx from "zpx";
 
 export const steps: INode[] = [
     {
         name: "开始",
-        type: "step-start",
+        type: ElementType.nodeStart,
         background: StepStart,
         size: [42, 42],
         outPoints: [
@@ -21,7 +22,7 @@ export const steps: INode[] = [
     },
     {
         name: "结束",
-        type: "step-end",
+        type: ElementType.nodeEnd,
         background: StepEnd,
         size: [42, 42],
         inPoints: [
@@ -33,7 +34,7 @@ export const steps: INode[] = [
     },
     {
         name: "任务流转",
-        type: "flow-task",
+        type: ElementType.nodeTask,
         background: FlowTask,
         size: [80, 44],
         inPoints: [
@@ -51,7 +52,7 @@ export const steps: INode[] = [
     },
     {
         name: "人员指派",
-        type: "flow-user",
+        type: ElementType.nodeUser,
         background: FlowUser,
         size: [80, 44],
         inPoints: [
@@ -69,7 +70,7 @@ export const steps: INode[] = [
     },
     {
         name: "并行任务",
-        type: "gateway-parallel",
+        type: ElementType.nodeParallel,
         background: GatewayParallel,
         size: [42, 42],
         inPoints: [
@@ -87,7 +88,7 @@ export const steps: INode[] = [
     },
     {
         name: "互斥任务",
-        type: "gateway-mutex",
+        type: ElementType.nodeMutex,
         background: GatewayMutex,
         size: [42, 42],
         inPoints: [
@@ -108,7 +109,7 @@ export const steps: INode[] = [
 export function stepAttr(type: string) {
     let step = steps.find(r => r.type == type) || {} as any
     return {
-        id: crypto.randomUUID(),
+        id: zpx.uuid(),
         name: step.name,
         type: step.type,
         size: step.size,

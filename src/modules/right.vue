@@ -1,8 +1,8 @@
 <template>
-  <Panel direct="right" title="属性">
+  <Panel direct="right">
     <div class="z-right">
       <div class="z-content">
-
+        <NodeEdit></NodeEdit>
       </div>
       <Panel class="z-mini-canvas" title="导航器">
         <Minimap class="z-minimap"/>
@@ -11,15 +11,17 @@
   </Panel>
 </template>
 <script lang="ts">
-import {defineComponent} from 'vue'
+import {defineComponent, ref} from 'vue'
 import Panel from "../components/panel"
 import Minimap from "./minimap.vue"
+import NodeEdit from "./node_edit.vue"
 
 
 export default defineComponent({
-  components: {Panel, Minimap},
+  components: {Panel, Minimap, NodeEdit},
   props: {},
   setup(props) {
+
     return {}
   }
 })

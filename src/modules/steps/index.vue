@@ -14,7 +14,7 @@ import {defineComponent, ref, watch} from "vue";
 import zpx from "zpx";
 import {Events, INode} from "../../lib/types";
 import {ModelConfig} from "@antv/g6-core/lib/types";
-import {steps, stepAttr} from "../../g6/element/node_types";
+import {steps, stepAttr} from "../../g6/element/default-nodes";
 
 
 export default defineComponent({
