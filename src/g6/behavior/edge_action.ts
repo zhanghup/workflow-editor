@@ -1,4 +1,4 @@
-import G6, {INode, IShape, IEdge, Edge} from '@antv/g6';
+import G6, {INode, IShape, IEdge} from '@antv/g6';
 import {Events, GraphBehavior, GraphMode, ElementType, cttrs} from "../../lib/types";
 import zpx from "zpx";
 import {getGraph, showAllAnchorIn} from "../actions";
@@ -12,15 +12,93 @@ interface ISourceEdge {
 let sourceEdge = ref<ISourceEdge | null>()
 let sourceEdgeInfo = ref<IShape | null>()
 
+/*
+// 响应状态变化
+    setState(name, value, item) {
+        if (!item) {
+            return
+        }
+        if (typeof value == "string") {
+            return
+        }
+        const group = item.getContainer();
+        const shape = group.get('children')[0];
+        if (name === 'active') {
+            if (value) {
+                shape.attr('stroke', 'steelblue');
+            } else {
+                shape.attr('stroke', '#333');
+            }
+        }
+        if (name === 'selected') {
+            if (value) {
+                shape.attr('lineWidth', 3);
+            } else {
+                shape.attr('lineWidth', 1);
+            }
+        }
+    },
+ */
+
+interface ICurrent {
+    id: string
+    attrs: Record<string, any>
+}
+
+const current = ref<ICurrent | null>(null)
+
 // Custom a type of Behavior
 G6.registerBehavior(GraphBehavior.edgeAction, {
     currentXY: [0, 0],
     getEvents() {
         return {
+            "edge:click": "edgeClick",
+            "edge:mouseenter": "edgeMouseEnter",
+            "edge:mouseleave": "edgeMouseLeave",
             "node:mousedown": "onMousedown",
             'mousemove': 'onMousemove',
             'mouseup': 'onMouseup',
         };
+    },
+    edgeClick(e: any) {
+        let edge = e.item as IEdge
+        if (edge.get(cttrs.BType) != ElementType.typeEdge) {
+            return
+        }
+        let uuid = edge.get(cttrs.UUID) as string
+
+        let shape = e.shape as IShape
+
+    },
+    edgeMouseEnter(e: any) {
+        let edge = e.item as IEdge
+        if (edge.get(cttrs.BType) != ElementType.typeEdge) {
+            return
+        }
+        let uuid = edge.get(cttrs.UUID) as string
+
+        let shape = e.target as IShape
+        current.value = {
+            id: uuid,
+            attrs: shape.attr()
+        }
+
+        shape.attr({
+            stroke: "red",
+            lineWidth: 5,
+        })
+    },
+    edgeMouseLeave(e: any) {
+        let edge = e.item as IEdge
+        if (edge.get(cttrs.BType) != ElementType.typeEdge) {
+            return
+        }
+
+        let shape = e.target as IShape
+        if (current.value) {
+            shape.attr(current.value.attrs)
+        }
+        current.value = null
     },
     onMousedown(e: any) {
         if (!e.target) {

@@ -1,4 +1,4 @@
-import G6, {Graph} from "@antv/g6";
+import G6, {Graph,Item} from "@antv/g6";
 import {ref, watch} from "vue";
 import {ElementType, GraphBehavior, GraphMode} from "./lib/types";
 import {stepAttr} from "./g6/element/default-nodes";
@@ -82,6 +82,8 @@ function init(container: HTMLDivElement) {
         graph.addItem("node", {...stepAttr(ElementType.nodeParallel), x: 500, y: 300})
         graph.refresh()
     }, 1000)
+
+
 
     graph.render()
     return graph
