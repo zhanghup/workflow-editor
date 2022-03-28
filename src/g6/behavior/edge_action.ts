@@ -1,5 +1,5 @@
-import G6, {INode, IShape, IEdge} from '@antv/g6';
-import {Events, GraphBehavior, GraphMode, ElementType, cttrs} from "../../lib/types";
+import G6, {INode, IShape, IEdge, Graph} from '@antv/g6';
+import {Events, GraphBehavior, GraphMode, ElementType, cttrs, VEvents} from "../../lib/types";
 import zpx from "zpx";
 import {getGraph, showAllAnchorIn} from "../actions";
 import {ref} from "vue";
@@ -12,47 +12,21 @@ interface ISourceEdge {
 let sourceEdge = ref<ISourceEdge | null>()
 let sourceEdgeInfo = ref<IShape | null>()
 
-/*
-// 响应状态变化
-    setState(name, value, item) {
-        if (!item) {
-            return
-        }
-        if (typeof value == "string") {
-            return
-        }
-        const group = item.getContainer();
-        const shape = group.get('children')[0];
-        if (name === 'active') {
-            if (value) {
-                shape.attr('stroke', 'steelblue');
-            } else {
-                shape.attr('stroke', '#333');
-            }
-        }
-        if (name === 'selected') {
-            if (value) {
-                shape.attr('lineWidth', 3);
-            } else {
-                shape.attr('lineWidth', 1);
-            }
-        }
-    },
- */
-
 interface ICurrent {
     id: string
     attrs: Record<string, any>
 }
 
-const current = ref<ICurrent | null>(null)
+const currentKey = ref<ICurrent | null>(null)
+const currentText = ref<ICurrent | null>(null)
+const currentFlag = ref(false)
 
-// Custom a type of Behavior
 G6.registerBehavior(GraphBehavior.edgeAction, {
     currentXY: [0, 0],
     getEvents() {
         return {
             "edge:click": "edgeClick",
+            "canvas:click": "click",
             "edge:mouseenter": "edgeMouseEnter",
             "edge:mouseleave": "edgeMouseLeave",
             "node:mousedown": "onMousedown",
@@ -60,45 +34,115 @@ G6.registerBehavior(GraphBehavior.edgeAction, {
             'mouseup': 'onMouseup',
         };
     },
-    edgeClick(e: any) {
-        let edge = e.item as IEdge
-        if (edge.get(cttrs.BType) != ElementType.typeEdge) {
+    click(e: any) {
+        if (!currentKey.value) {
             return
         }
-        let uuid = edge.get(cttrs.UUID) as string
 
-        let shape = e.shape as IShape
+        let group = e.currentTarget as Graph
+        let edge = group.findById(currentKey.value.id) as IEdge
+        currentFlag.value = false;
 
+        if (edge) {
+            (this as any).edgeMouseLeave(e, edge)
+        }
+
+        zpx.emit(Events.GraphModeChange, GraphMode.default)
+        zpx.emit(VEvents.EdgeEdit, null)
+    },
+    edgeClick(e: any) {
+        currentFlag.value = true;
+        (this as any).edgeMouseEnter(e)
+        let edge = e.item as IEdge
+
+        zpx.emit(Events.GraphModeChange, GraphMode.edgeEdit)
+        zpx.emit(VEvents.EdgeEdit, edge)
     },
     edgeMouseEnter(e: any) {
+        if (currentFlag.value) {
+            return
+        }
+
         let edge = e.item as IEdge
         if (edge.get(cttrs.BType) != ElementType.typeEdge) {
             return
         }
-        let uuid = edge.get(cttrs.UUID) as string
 
-        let shape = e.target as IShape
-        current.value = {
-            id: uuid,
-            attrs: shape.attr()
+        let shape = edge.getKeyShape() as IShape
+        let attr = shape.attr()
+        currentKey.value = {
+            id: edge.get("id"),
+            attrs: {
+                lineWidth: attr.lineWidth,
+            }
+        }
+
+        for (let o of edge._cfg?.group?.getChildren() || []) {
+            if (o.get("type") != "text") {
+                continue
+            }
+
+            let textShape = o as IShape
+            let attr = textShape.attr()
+            currentText.value = {
+                id: edge.get(cttrs.UUID),
+                attrs: {
+                    fontSize: attr.fontSize,
+                    fontWeight: attr.fontWeight,
+                    shadowColor: attr.shadowColor,
+                    shadowBlur: attr.shadowBlur,
+                }
+            }
+
+            textShape.attr({
+                fontSize: 22,
+                fontWeight: 400,
+                shadowColor: 'blue',
+                shadowBlur: 10,
+            })
+
+            break
         }
 
         shape.attr({
-            stroke: "red",
-            lineWidth: 5,
+            lineWidth: 8,
         })
     },
-    edgeMouseLeave(e: any) {
-        let edge = e.item as IEdge
+    edgeMouseLeave(e: any, edge?: IEdge) {
+        if (currentFlag.value) {
+            return
+        }
+
+        edge = edge || e.item as IEdge
         if (edge.get(cttrs.BType) != ElementType.typeEdge) {
             return
         }
 
-        let shape = e.target as IShape
-        if (current.value) {
-            shape.attr(current.value.attrs)
+
+        let shape = edge.getKeyShape()
+        if (currentKey.value) {
+            shape.attr({
+                ...currentKey.value.attrs
+            })
         }
-        current.value = null
+
+        for (let o of edge._cfg?.group?.getChildren() || []) {
+            if (o.get("type") != "text") {
+                continue
+            }
+
+
+            let textShape = o as IShape
+            if (currentText.value) {
+                textShape.attr({
+                    ...currentText.value.attrs
+                })
+            }
+            break
+        }
+
+        currentKey.value = null
+        currentText.value = null
     },
     onMousedown(e: any) {
         if (!e.target) {

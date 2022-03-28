@@ -1,5 +1,5 @@
 import {ref, Ref, watch} from "vue";
-import G6, {Graph, IEdge, INode} from "@antv/g6";
+import G6, {Graph, IEdge, INode, Item} from "@antv/g6";
 import {PluginBase} from "@antv/g6-plugin"
 import zpx from "zpx";
 import {cttrs, ElementType, Events, GraphMode, VEvents} from "./types";
@@ -14,10 +14,10 @@ export default function DoEvent(graph: Ref<Graph | null>) {
 
     let allEvents = zpx.mittAll()
     for (let o in Events) {
-        allEvents.set(Events[o], [])
+        allEvents.set(o, [])
     }
     for (let o in VEvents) {
-        allEvents.set(VEvents[o], [])
+        allEvents.set(o, [])
     }
 
     // 小地图插件注册
@@ -89,6 +89,27 @@ export default function DoEvent(graph: Ref<Graph | null>) {
             return
         }
         graph.value.setMode(v)
+    })
+    // 删除元素
+    zpx.on(Events.GraphRemoveElement, (item: Item | string) => {
+        if (!graph.value) {
+            return
+        }
+        graph.value?.removeItem(item)
+    })
+    // 刷新元素
+    zpx.on(Events.GraphRefreshElement, (item: Item | string) => {
+        if (!graph.value) {
+            return
+        }
+        graph.value?.refreshItem(item)
+    })
+    // 更新元素
+    zpx.on(Events.GraphUpdateElement, ({item, cfg}: any) => {
+        if (!graph.value) {
+            return
+        }
+        graph.value?.updateItem(item, cfg)
     })
 
     watch(graph, (newValue, oldValue) => {

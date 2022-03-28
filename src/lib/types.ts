@@ -1,27 +1,33 @@
-
 // 记得初始化的时候情况zpx中的事件
-export const Events:Record<string, string> = {
+export enum Events {
     /** 小地图插件注册 */
-    PluginMinimapRegister: "PluginMinimapRegister",
+    PluginMinimapRegister = "PluginMinimapRegister",
     /**  网格线注册 */
-    PluginGridRegister: "PluginGridRegister",
+    PluginGridRegister = "PluginGridRegister",
     /** 编辑工具注册 */
-    PluginToolbarRegister: "PluginToolbarRegister",
+    PluginToolbarRegister = "PluginToolbarRegister",
     /** 切换模式 */
-    GraphModeChange: "GraphModeChange",
+    GraphModeChange = "GraphModeChange",
     /** 数据刷新 */
-    DataRefresh: "DataRefresh",
+    DataRefresh = "DataRefresh",
+    /** 从graph中删除元素 */
+    GraphRemoveElement = "GraphRemoveElement",
+    /** 从graph中刷新元素 */
+    GraphRefreshElement = "GraphRefreshElement",
+    /** 从graph中更新元素 */
+    GraphUpdateElement = "GraphUpdateElement",
     /** 添加节点 */
-    NodeAdd: "NodeAdd",
+    NodeAdd = "NodeAdd",
     /** 添加节点并且进行屏幕坐标转换 */
-    NodeAddPx: "NodeAddPx",
+    NodeAddPx = "NodeAddPx",
     /** 添加线 */
-    EdgeAdd: "EdgeAdd"
+    EdgeAdd = "EdgeAdd"
 }
 
 // 记得初始化的时候情况zpx中的事件
-export const VEvents:Record<string, string> = {
-    NodeEdit: "node:edit",
+export enum VEvents {
+    NodeEdit = "node:edit",
+    EdgeEdit = "edge:edit",
 }
 
 /** 自定义属性值 */
@@ -52,7 +58,8 @@ export enum ElementType {
 export enum GraphMode {
     default = "default",
     edgeAdd = "edge:add",
-    nodeEdit = "node:edit"
+    nodeEdit = "node:edit",
+    edgeEdit = "edge:edit"
 }
 
 export enum GraphBehavior {

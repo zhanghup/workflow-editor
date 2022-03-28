@@ -9,7 +9,7 @@
 <script lang="ts" setup>
 import Panel from "../components/panel"
 import zpx from "zpx";
-import {VEvents} from "../lib/types";
+import {Events, GraphMode, VEvents} from "../lib/types";
 import {IEdge, INode} from "@antv/g6";
 import {ref, watch} from "vue";
 
@@ -36,9 +36,13 @@ function NodeDelete() {
 
   for (let o of obj.getEdges() || []) {
     o.getContainer().remove(true)
+    zpx.emit(Events.GraphRemoveElement, o)
     obj.removeEdge(o)
   }
   obj.getContainer().remove(true)
+
+  zpx.emit(Events.GraphRemoveElement, obj)
+  zpx.emit(Events.GraphModeChange, GraphMode.default)
   node.value = null
 }
 

@@ -1,4 +1,4 @@
-import G6, {Graph,Item} from "@antv/g6";
+import G6, {Graph, Item} from "@antv/g6";
 import {ref, watch} from "vue";
 import {ElementType, GraphBehavior, GraphMode} from "./lib/types";
 import {stepAttr} from "./g6/element/default-nodes";
@@ -38,6 +38,7 @@ function init(container: HTMLDivElement) {
                 GraphBehavior.nodeEdit,
             ],
             [GraphMode.edgeAdd]: [GraphBehavior.edgeAction],
+            [GraphMode.edgeEdit]: [GraphBehavior.edgeAction],
             [GraphMode.nodeEdit]: [GraphBehavior.nodeEdit],
         },
         layout: {
@@ -45,7 +46,6 @@ function init(container: HTMLDivElement) {
             unitRadius: 50,
             center: [500, 300],
         },
-
         defaultNode: {
             type: ElementType.nodeTask,
             labelCfg: {},
@@ -61,10 +61,10 @@ function init(container: HTMLDivElement) {
             size: 1,
             color: '#b7b3b3',
             style: {
-                endArrow: {
-                    path: 'M 0,0 L 8,4 L 8,-4 Z',
-                    fill: '#989090',
-                },
+                endArrow: true,
+                stroke: '#C2C8D5',
+                lineWidth: 2,
+                offset: 45,
                 radius: 20,
             },
         },
@@ -82,7 +82,6 @@ function init(container: HTMLDivElement) {
         graph.addItem("node", {...stepAttr(ElementType.nodeParallel), x: 500, y: 300})
         graph.refresh()
     }, 1000)
-
 
 
     graph.render()

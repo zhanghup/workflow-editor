@@ -3,6 +3,7 @@
     <div class="z-right">
       <div class="z-content">
         <NodeEdit></NodeEdit>
+        <EdgeEdit></EdgeEdit>
       </div>
       <Panel class="z-mini-canvas" title="导航器">
         <Minimap class="z-minimap"/>
@@ -15,10 +16,11 @@ import {defineComponent, ref} from 'vue'
 import Panel from "../components/panel"
 import Minimap from "./minimap.vue"
 import NodeEdit from "./node_edit.vue"
+import EdgeEdit from "./edge_edit.vue"
 
 
 export default defineComponent({
-  components: {Panel, Minimap, NodeEdit},
+  components: {Panel, Minimap, NodeEdit, EdgeEdit},
   props: {},
   setup(props) {
 

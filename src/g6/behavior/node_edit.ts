@@ -15,11 +15,11 @@ G6.registerBehavior(GraphBehavior.nodeEdit, {
     currentXY: [0, 0],
     getEvents() {
         return {
-            "click": "onClick",
+            "node:click": "onClick",
+            "canvas:click": "click",
         };
     },
-    onClick(e: any) {
-        // 清理之前的
+    click(e: any) {
         if (current.value) {
             let graph = getGraph(e)
             if (graph) {
@@ -36,6 +36,9 @@ G6.registerBehavior(GraphBehavior.nodeEdit, {
             zpx.emit(VEvents.NodeEdit, null)
             return
         }
+    },
+    onClick(e: any) {
+
         const node = e.item as INode
         const keyShape = node.getKeyShape()
         if (keyShape.get(cttrs.BType) != ElementType.typeShape) {
