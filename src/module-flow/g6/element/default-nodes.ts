@@ -1,9 +1,9 @@
-import StepStart from "../../assets/step_start.svg"
-import StepEnd from "../../assets/step_end.svg"
-import GatewayMutex from "../../assets/gateway-mutex.svg"
-import GatewayParallel from "../../assets/gateway-parallel.svg"
-import FlowTask from "../../assets/flow-task.svg"
-import FlowUser from "../../assets/flow-user.svg"
+import StepStart from "../../../assets/step_start.svg"
+import StepEnd from "../../../assets/step_end.svg"
+import GatewayMutex from "../../../assets/gateway-mutex.svg"
+import GatewayParallel from "../../../assets/gateway-parallel.svg"
+import FlowTask from "../../../assets/flow-task.svg"
+import FlowUser from "../../../assets/flow-user.svg"
 import {ElementType, INode} from "../../lib/types";
 import zpx from "zpx";
 

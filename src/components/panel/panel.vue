@@ -7,7 +7,6 @@
       <div style="padding-right: 5px;">
         <slot name="title-action"></slot>
       </div>
-
     </div>
     <div class="z-body">
       <slot></slot>
@@ -63,7 +62,6 @@ export default defineComponent({
 </script>
 <style lang="less" scoped>
 .z-panel {
-  height: 100%;
   z-index: 2;
   background: #f7f9fb;
   width: 200px;

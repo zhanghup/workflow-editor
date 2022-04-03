@@ -5,9 +5,8 @@
 </template>
 <script lang="ts">
 import {defineComponent} from 'vue'
-import Panel from "../components/panel"
-import Step from "./steps"
-import zpx from "zpx";
+import Panel from "../../components/panel"
+import Step from "../steps/index"
 
 
 export default defineComponent({

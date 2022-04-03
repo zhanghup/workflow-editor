@@ -13,10 +13,10 @@
 </template>
 <script lang="ts">
 import {defineComponent, ref} from 'vue'
-import Panel from "../components/panel"
+import Panel from "../../components/panel"
 import Minimap from "./minimap.vue"
-import NodeEdit from "./node_edit.vue"
-import EdgeEdit from "./edge_edit.vue"
+import NodeEdit from "../edits/node_edit.vue"
+import EdgeEdit from "../edits/edge_edit.vue"
 
 
 export default defineComponent({

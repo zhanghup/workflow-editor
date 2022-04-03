@@ -1,35 +1,20 @@
 <template>
   <div class="workflow-editor">
-    <Toolbar/>
-    <div class="wcontent">
-      <Left></Left>
-      <div ref="container" class="container"></div>
-      <Right></Right>
-    </div>
+<!--    <AppFlow></AppFlow>-->
+    <AppForm></AppForm>
   </div>
 </template>
 <script lang="ts">
-import {ElConfigProvider} from 'element-plus'
 import {defineComponent} from "vue";
-import Toolbar from "./modules/toolbar.vue"
-import Left from "./modules/left.vue"
-import Right from "./modules/right.vue"
-import InitGraph from "./index"
-import DoEvent from "./lib/event"
-import "./g6"
-import zpx from "zpx";
+import AppFlow from "./module-flow/index.vue";
+import AppForm from "./module-form/index.vue"
 
 export default defineComponent({
   name: "WorkflowEditor",
-  components: {ElConfigProvider, Toolbar, Left, Right},
+  components: {AppFlow,AppForm},
   props: {},
   setup(props) {
-    let {container, graph} = InitGraph()
-    DoEvent(graph as any)
-
-    return {
-      container,
-    }
+    return {}
   }
 })
 

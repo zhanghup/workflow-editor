@@ -1,7 +1,7 @@
 import G6, {Graph, Item} from "@antv/g6";
 import {ref, watch} from "vue";
-import {ElementType, GraphBehavior, GraphMode} from "./lib/types";
-import {stepAttr} from "./g6/element/default-nodes";
+import {ElementType, GraphBehavior, GraphMode} from "./types";
+import {stepAttr} from "../g6/element/default-nodes";
 import zpx from "zpx";
 
 export default function InitGraph() {

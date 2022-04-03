@@ -19,21 +19,24 @@
 
       <Panel class="z-edge-edit-form" title="表单设置">
         <div class="z-content">
-          <el-button class="z-add">添加</el-button>
+          <el-button class="z-add" @click="ShowEdit">添加</el-button>
         </div>
       </Panel>
 
+      <EdgeEditForm v-model="showEdit"></EdgeEditForm>
     </template>
   </Panel>
 </template>
 
 <script lang="ts" setup>
-import Panel from "../components/panel"
+import Panel from "../../components/panel"
+import EdgeEditForm from "./edge_edit_form.vue"
 import zpx from "zpx";
 import {Events, GraphMode, VEvents} from "../lib/types";
 import {IEdge} from "@antv/g6";
 import {ref} from "vue";
 
+const showEdit = ref(false)
 const edge = ref<IEdge | null>()
 const info = ref<any>({})
 const form = ref<any>({})
@@ -46,6 +49,10 @@ zpx.on(VEvents.EdgeEdit, (v: IEdge | null) => {
   }
   resetForm(v, true)
 })
+
+function ShowEdit() {
+  showEdit.value = true
+}
 
 function resetForm(v: IEdge, flag = false) {
   info.value = {

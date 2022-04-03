@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-import Panel from "../components/panel"
+import Panel from "../../components/panel"
 import zpx from "zpx";
 import {Events, GraphMode, VEvents} from "../lib/types";
 import {IEdge, INode} from "@antv/g6";

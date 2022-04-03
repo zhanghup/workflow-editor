@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import {defineComponent, ref, watch} from 'vue'
-import Panel from "../components/panel"
+import Panel from "../../components/panel"
 import zpx from "zpx";
 import G6 from '@antv/g6';
 import {Events} from "../lib/types";
