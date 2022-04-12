@@ -1,29 +1,15 @@
 <template>
   <div class="z-toolbar">
     流程表单设计器
-      <div class="z-body" ref="toolbar"></div>
-    </div>
+    <div class="z-body" ref="toolbar"></div>
+  </div>
 </template>
 <script lang="ts">
 import {defineComponent, ref, watch} from "vue";
-import G6 from "@antv/g6";
-import zpx from "zpx"
-import {Events} from "../lib/types";
 
 export default defineComponent({
   setup() {
-    // let toolbar = ref()
-    // watch(toolbar, (v: HTMLDivElement) => {
-    //   const plugin = new G6.ToolBar({
-    //     container: v,
-    //   });
-    //
-    //   zpx.emit(Events.PluginToolbarRegister, plugin)
-    // })
-    //
-    // return {
-    //   toolbar
-    // }
+
 
   }
 })

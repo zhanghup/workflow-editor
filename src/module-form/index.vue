@@ -17,6 +17,7 @@ import Right from "./layout/right.vue"
 import Body from "./layout/body.vue"
 import {ComponentItem, CompType} from "./layout/events";
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import zpx from "zpx";
 
 
 export default defineComponent({
@@ -70,13 +71,13 @@ export default defineComponent({
         const placeholder = `${item.ctype == 'input' ? "请输入" : "请选择"}${item.label}`
         current.value = {
           ...item,
-          id: new Date().getTime() + "",
+          id: zpx.uuid(),
           value: item.type == CompType.Checkbox ? [] : null,
           prop: "",
           rules: [],
           options: [
-            {label: "选项一", value: "1"},
-            {label: "选项二", value: "2"},
+            {id: zpx.uuid(), label: "选项一", value: "1"},
+            {id: zpx.uuid(), label: "选项二", value: "2"},
           ],
           active: true,
           placeholder,

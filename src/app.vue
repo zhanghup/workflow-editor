@@ -1,11 +1,11 @@
 <template>
   <div class="workflow-editor">
-<!--    <AppFlow></AppFlow>-->
-    <AppForm></AppForm>
+    <AppFlow v-if="type==='flow'"></AppFlow>
+    <AppForm v-else-if="type === 'form'"></AppForm>
   </div>
 </template>
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent, ref} from "vue";
 import AppFlow from "./module-flow/index.vue";
 import AppForm from "./module-form/index.vue"
 
@@ -14,7 +14,10 @@ export default defineComponent({
   components: {AppFlow,AppForm},
   props: {},
   setup(props) {
-    return {}
+    let type = ref("flow")
+    return {
+      type,
+    }
   }
 })
 

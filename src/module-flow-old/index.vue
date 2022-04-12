@@ -8,19 +8,22 @@
 </template>
 <script lang="ts">
 import {defineComponent} from "vue";
-import Header from "./layout-header.vue"
-import Left from "./layout-left.vue"
-import Right from "./layout-right.vue"
-
-import Init from "./init"
+import Header from "./layout/header.vue"
+import Left from "./layout/left.vue"
+import Right from "./layout/right.vue"
+import InitGraph from "./lib/init"
+import DoEvent from "./lib/event"
+import "./g6"
 
 export default defineComponent({
   components: {Header, Left, Right},
   props: {},
   setup(props) {
-    let initInfo = Init()
+    let {container, graph} = InitGraph()
+    DoEvent(graph as any)
+
     return {
-      ...initInfo
+      container,
     }
   }
 })
