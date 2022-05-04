@@ -1,14 +1,41 @@
 <template>
   <div class="z-toolbar">
-    流程表单设计器
-    <div class="z-body" ref="toolbar"></div>
+    <div class="z-label">流程表单设计器</div>
+    <div class="z-body" ref="toolbar">
+      <el-button @click="reset">重置</el-button>
+      <el-button @click="save">保存</el-button>
+      <el-button type="primary" @click="confirm">确定</el-button>
+    </div>
   </div>
 </template>
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent, ref, SetupContext,onBeforeUnmount} from "vue";
+
+let interval = ref(0)
 
 export default defineComponent({
-  setup() {
+  emits: ["reset", "confirm","save"],
+  setup(props, ctx: SetupContext) {
+    interval.value = setInterval(() => {
+      ctx.emit("save")
+    }, 1000)
+
+    onBeforeUnmount(()=>{
+      clearInterval(interval.value)
+    })
+
+
+    return {
+      reset() {
+        ctx.emit("reset")
+      },
+      confirm() {
+        ctx.emit("confirm")
+      },
+      save() {
+        ctx.emit("save")
+      },
+    }
   }
 })
 </script>
@@ -23,8 +50,15 @@ export default defineComponent({
   align-items: center;
   padding-left: 10px;
 
+  .z-label {
+    flex-grow: 1;
+  }
+
   .z-body {
     height: 100%;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
   }
 }
 </style>

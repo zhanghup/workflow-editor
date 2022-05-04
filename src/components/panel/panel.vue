@@ -27,16 +27,16 @@ export default defineComponent({
       type: String,
       validator: v => ["top", "bottom", "left", "right"].indexOf(v) > -1
     },
+    style: {type: Object, default: () => ({})},
   },
   setup(props) {
-    let localStyle = reactive<Record<string, string>>({})
+    let localStyle = reactive<Record<string, string>>(props.style as {})
     watch([
       toRef(props, "width"),
       toRef(props, "direct"),
     ], ([width, direct]) => {
 
       localStyle.width = width
-
 
       switch (direct) {
         case "top":

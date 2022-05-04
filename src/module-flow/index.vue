@@ -1,26 +1,43 @@
 <template>
   <Header/>
   <div class="wcontent">
-    <Left></Left>
-    <div ref="container" class="container"></div>
-    <Right></Right>
+    <Panel direct="left" style="height: 100%;">
+      <div style="display: flex;flex-direction: column;height: 100%;">
+        <Panel direct="left" title="流程组件" style="flex-grow: 1;">
+          <LayoutSteps @add="OnAdd"></LayoutSteps>
+        </Panel>
+        <Panel direct="left" title="流程组件">
+        </Panel>
+      </div>
+    </Panel>
+    <div class="container">
+      <div class="container-c" ref="container"></div>
+    </div>
+    <Panel direct="right">
+      <div class="z-right">
+        <div class="z-content">
+        </div>
+        <Panel class="z-mini-canvas" title="导航器">
+          <div class="z-minimap" ref="minimap"></div>
+        </Panel>
+      </div>
+    </Panel>
   </div>
 </template>
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent, SetupContext} from "vue";
 import Header from "./layout-header.vue"
-import Left from "./layout-left.vue"
-import Right from "./layout-right.vue"
-
-import Init from "./init"
+import LayoutSteps from "./layout-steps.vue";
+import Panel from "../components/panel"
+import init from "./init";
+import {StepNode} from "./type";
 
 export default defineComponent({
-  components: {Header, Left, Right},
+  components: {Header, LayoutSteps, Panel},
   props: {},
-  setup(props) {
-    let initInfo = Init()
+  setup(props: any, ctx: SetupContext) {
     return {
-      ...initInfo
+      ...init(props, ctx),
     }
   }
 })
@@ -44,8 +61,31 @@ export default defineComponent({
 
   .container {
     flex-grow: 1;
+    position: relative;
+
+    .container-c {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 
+.z-right {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
+  .z-content {
+    flex-grow: 1;
+  }
+
+  .z-mini-canvas {
+    height: 250px;
+
+    .z-minimap {
+      height: 100%;
+    }
+  }
+}
 </style>
