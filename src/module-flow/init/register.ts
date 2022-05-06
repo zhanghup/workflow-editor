@@ -24,6 +24,11 @@ G6.registerNode("c-image", {
             case "diamond":
                 return drawDiamond(cfg, group)
         }
+    },
+
+    getAnchorPoints(cfg?: ModelConfig) {
+
+        return undefined
     }
 })
 
@@ -47,6 +52,8 @@ function drawRect(cfg: ModelConfig, group: IGroup) {
             y: -config.height / 2,
             width: config.width,
             height: config.height,
+            fill: "fff",
+            opacity: 0,
         },
         name: 'rect-shape',
     });
@@ -69,6 +76,8 @@ function drawCircle(cfg: ModelConfig, group: IGroup) {
     return group.addShape('circle', {
         attrs: {
             r: config.width / 2,
+            fill: "fff",
+            opacity: 0,
         },
         name: 'circle-shape',
     });
@@ -98,6 +107,8 @@ function drawDiamond(cfg: ModelConfig, group: IGroup) {
                 [0, config.height / 2],
                 [-config.width / 2, 0],
             ],
+            fill: "fff",
+            opacity: 0,
         },
         name: 'polygon-shape',
     });

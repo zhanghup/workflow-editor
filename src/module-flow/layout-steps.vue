@@ -24,7 +24,7 @@ export default defineComponent({
     let items: StepNode[] = [
       {
         name: "开始",
-        type: "image",
+        type: "c-image",
         imgType: "circle",
         img: StepStart,
         width: 42,

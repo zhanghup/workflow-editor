@@ -1,10 +1,10 @@
 <template>
-  <Header/>
+  <Header @reset="onReset" @confirm="onConfirm" @save="onSave"/>
   <div class="wcontent">
     <Panel direct="left" style="height: 100%;">
       <div style="display: flex;flex-direction: column;height: 100%;">
         <Panel direct="left" title="流程组件" style="flex-grow: 1;">
-          <LayoutSteps @add="OnAdd"></LayoutSteps>
+          <LayoutSteps @add="onAdd"></LayoutSteps>
         </Panel>
         <Panel direct="left" title="流程组件">
         </Panel>
@@ -30,7 +30,6 @@ import Header from "./layout-header.vue"
 import LayoutSteps from "./layout-steps.vue";
 import Panel from "../components/panel"
 import init from "./init";
-import {StepNode} from "./type";
 
 export default defineComponent({
   components: {Header, LayoutSteps, Panel},

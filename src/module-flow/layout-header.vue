@@ -9,21 +9,11 @@
   </div>
 </template>
 <script lang="ts">
-import {defineComponent, ref, SetupContext,onBeforeUnmount} from "vue";
-
-let interval = ref(0)
+import {defineComponent, SetupContext} from "vue";
 
 export default defineComponent({
-  emits: ["reset", "confirm","save"],
+  emits: ["reset", "confirm", "save"],
   setup(props, ctx: SetupContext) {
-    interval.value = setInterval(() => {
-      ctx.emit("save")
-    }, 1000)
-
-    onBeforeUnmount(()=>{
-      clearInterval(interval.value)
-    })
-
 
     return {
       reset() {
