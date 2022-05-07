@@ -17,19 +17,14 @@ G6.registerNode("c-image", {
         }
 
         switch ((cfg.config as StepNode).imgType) {
+            case "endpoint":
+                return drawEndpoint(cfg, group)
             case "rect":
                 return drawRect(cfg, group)
-            case "circle":
-                return drawCircle(cfg, group)
-            case "diamond":
-                return drawDiamond(cfg, group)
+            case "gateway":
+                return drawGateway(cfg, group)
         }
     },
-
-    getAnchorPoints(cfg?: ModelConfig) {
-
-        return undefined
-    }
 })
 
 function drawRect(cfg: ModelConfig, group: IGroup) {
@@ -46,6 +41,8 @@ function drawRect(cfg: ModelConfig, group: IGroup) {
         name: 'image-shape',
     });
 
+    AnchorPoint(cfg, group, [[1, 1]], [[1, 1]])
+
     return group.addShape('rect', {
         attrs: {
             x: -config.width / 2,
@@ -59,7 +56,7 @@ function drawRect(cfg: ModelConfig, group: IGroup) {
     });
 }
 
-function drawCircle(cfg: ModelConfig, group: IGroup) {
+function drawEndpoint(cfg: ModelConfig, group: IGroup) {
     let config = cfg.config as StepNode
 
     group.addShape('image', {
@@ -73,17 +70,20 @@ function drawCircle(cfg: ModelConfig, group: IGroup) {
         name: 'image-shape',
     });
 
+    AnchorPoint(cfg, group, [[1, 1]], [[1, 1]])
+
     return group.addShape('circle', {
         attrs: {
             r: config.width / 2,
             fill: "fff",
+            stroke: "000",
             opacity: 0,
         },
         name: 'circle-shape',
     });
 }
 
-function drawDiamond(cfg: ModelConfig, group: IGroup) {
+function drawGateway(cfg: ModelConfig, group: IGroup) {
     let config = cfg.config as StepNode
 
     group.addShape('image', {
@@ -96,6 +96,8 @@ function drawDiamond(cfg: ModelConfig, group: IGroup) {
         },
         name: 'image-shape',
     });
+
+    AnchorPoint(cfg, group, [[1, 1]], [[1, 1]])
 
     return group.addShape('polygon', {
         attrs: {
@@ -112,4 +114,53 @@ function drawDiamond(cfg: ModelConfig, group: IGroup) {
         },
         name: 'polygon-shape',
     });
+}
+
+function AnchorPoint(cfg: ModelConfig, group: IGroup, inAnchor: number[][], outAnchor: number[][]) {
+    let config = cfg.config as StepNode
+
+    let shapes: IShape[] = []
+
+
+    for (let o of inAnchor) {
+        if (o.length != 2) {
+            continue
+        }
+
+
+
+        let s = group.addShape("circle", {
+            attrs: {
+                x: 0,
+                y: 0,
+                r: 4,
+                fill: "333333",
+                stroke: "326728",
+                cursor: "crosshair",
+            },
+            visible: true,
+        })
+        shapes.push(s)
+    }
+
+    for (let o of outAnchor) {
+        if (o.length != 2) {
+            continue
+        }
+
+        let s = group.addShape("circle", {
+            attrs: {
+                x: 0,
+                y: 0,
+                r: 4,
+                fill: "333333",
+                stroke: "326728",
+                cursor: "crosshair",
+            },
+            visible: true,
+        })
+        shapes.push(s)
+    }
+
+    return shapes
 }

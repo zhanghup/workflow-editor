@@ -27,14 +27,16 @@ export default function (props: any, ctx: SetupContext) {
             if (container.graph.value) {
                 let data = container.graph.value.save()
                 localStorage.setItem(version, JSON.stringify(data))
-                console.log("111111111111")
-                ElMessage({
-                    message: '保存成功',
-                    type: 'success',
-                })
+                alert("保存成功")
             }
         },
         onReset: () => {
+            if (container.graph.value) {
+                if (confirm("是否要清空所有数据")) {
+                    localStorage.setItem(version, "")
+                    container.graph.value.read([])
+                }
+            }
         },
         onConfirm: () => {
         },
@@ -45,12 +47,7 @@ function onAdd(g: Ref<Graph>) {
     return (e: DragEvent, item: StepNode) => {
         if (g.value) {
             let point = g.value.getPointByClient(e.x, e.y)
-
-            let node = g.value.addItem("node", {
-                ...point,
-                type: item.type,
-                config: item
-            }) as INode;
+            g.value.addItem("node", {...point, type: item.type, config: item})
         }
     }
 }

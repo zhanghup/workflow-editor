@@ -1,6 +1,6 @@
 export interface StepNode {
     name: string
-    imgType: "circle"|"rect"|"diamond" // circle/rect/diamond
+    imgType: "endpoint" | "rect" | "gateway"
     type: string
     img: string
     width: number

@@ -25,7 +25,7 @@ export default defineComponent({
       {
         name: "开始",
         type: "c-image",
-        imgType: "circle",
+        imgType: "endpoint",
         img: StepStart,
         width: 42,
         height: 42,
@@ -33,7 +33,7 @@ export default defineComponent({
       {
         name: "结束",
         type: "c-image",
-        imgType: "circle",
+        imgType: "endpoint",
         img: StepEnd,
         width: 42,
         height: 42,
@@ -57,7 +57,7 @@ export default defineComponent({
       {
         name: "并行任务",
         type: "c-image",
-        imgType: "diamond",
+        imgType: "gateway",
         img: GatewayParallel,
         width: 42,
         height: 42,
@@ -65,7 +65,7 @@ export default defineComponent({
       {
         name: "互斥任务",
         type: "c-image",
-        imgType: "diamond",
+        imgType: "gateway",
         img: GatewayMutex,
         width: 42,
         height: 42,
